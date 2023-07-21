@@ -1,9 +1,10 @@
 import json
-from migrate import main
-from aiochclient import ChClient
-import responses
+
 import pytest
-import datetime
+import responses
+from aiochclient import ChClient
+
+from migrate import elements_chain_to_elements, main
 
 
 @pytest.mark.asyncio
@@ -445,3 +446,28 @@ async def setup_clickhouse_schema(client: ChClient):
             )
          """
     )
+
+
+@pytest.mark.parametrize(
+    "elements_chain,expected",
+    [
+        (
+            """strong.pricingpage:attr__class="pricingpage"nth-child="1"nth-of-type="1"text="A question?";""",
+            [
+                {
+                    "tag_name": "strong",
+                    "attributes": {"attr__class": "pricingpage"},
+                    "attr_class": "pricingpage",
+                    "nth_child": 1,
+                    "nth_of_type": 1,
+                    "text": "A question?",
+                }
+            ],
+        )
+    ],
+)
+def test_elements_chain_to_elements(elements_chain, expected):
+    elements_chain = """strong.pricingpage:attr__class="pricingpage"nth-child="1"nth-of-type="1"text="A question?";"""
+    db_elements = elements_chain_to_elements(elements_chain)
+
+    assert db_elements == expected
