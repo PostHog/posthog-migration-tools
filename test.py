@@ -1,3 +1,4 @@
+import datetime
 import json
 
 import pytest
@@ -467,7 +468,6 @@ async def setup_clickhouse_schema(client: ChClient):
     ],
 )
 def test_elements_chain_to_elements(elements_chain, expected):
-    elements_chain = """strong.pricingpage:attr__class="pricingpage"nth-child="1"nth-of-type="1"text="A question?";"""
     db_elements = elements_chain_to_elements(elements_chain)
 
     assert db_elements == expected
