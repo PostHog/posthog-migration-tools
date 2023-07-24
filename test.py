@@ -433,6 +433,7 @@ async def setup_clickhouse_schema(client: ChClient):
             `team_id` Int64,
             `distinct_id` String,
             `created_at` DateTime64(6, 'UTC'),
+            `elements_chain` VARCHAR,
             `_timestamp` DateTime,
             `_offset` UInt64,
         ) ENGINE = ReplacingMergeTree(
