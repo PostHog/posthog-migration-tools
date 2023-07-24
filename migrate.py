@@ -18,7 +18,6 @@
 import argparse
 import asyncio
 import base64
-import collections
 import contextlib
 import dataclasses
 import json
@@ -312,7 +311,7 @@ def convert_db_elements_to_raw_elements(elements_chain):
     for element in elements_chain:
         if element.get("attributes") and element["attributes"].get("attr__class"):
             element["attr_class"] = element["attributes"]["attr__class"]
-        if element["text"]:
+        if element.get("text"):
             element["$el_text"] = element["text"]
     return elements_chain
 
