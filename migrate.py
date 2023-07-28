@@ -256,7 +256,7 @@ def elements_chain_to_elements(elements_chain: str) -> list[dict]:
     elements_chain = elements_chain.replace("\n", "")
 
     for match in re.finditer(split_chain_regex, elements_chain):
-        class_attributes = re.search(split_class_attributes_regex, match.string)
+        class_attributes = re.search(split_class_attributes_regex, match.group(0))
 
         attributes = {}
         if class_attributes is not None:

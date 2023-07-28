@@ -467,6 +467,36 @@ async def setup_clickhouse_schema(client: ChClient):
                     "text": "A question?",
                 }
             ],
+        ),
+        (
+            """
+            div:attr__id="gatsby-focus-wrapper"attr__style="outline:none"attr__tabindex="-1"attr_id="gatsby-focus-wrapper"nth-child="1"nth-of-type="1";div:attr__id="___gatsby"attr_id="___gatsby"nth-child="3"nth-of-type="1";body.dark:attr__class="dark"nth-child="2"nth-of-type="1"
+            """,
+            [
+                {
+                    'attr_id': 'gatsby-focus-wrapper',
+                    'attributes': {'attr__id': 'gatsby-focus-wrapper',
+                                   'attr__style': 'outline:none',
+                                   'attr__tabindex': '-1'},
+                    'nth_child': 1,
+                    'nth_of_type': 1,
+                    'tag_name': 'div'
+                },
+                {
+                    'attr_id': '___gatsby',
+                    'attributes': {'attr__id': '___gatsby'},
+                    'nth_child': 3,
+                    'nth_of_type': 1,
+                    'tag_name': 'div'
+                },
+                {
+                    'attr_class': 'dark',
+                    'attributes': {'attr__class': 'dark'},
+                    'nth_child': 2,
+                    'nth_of_type': 1,
+                    'tag_name': 'body'
+                }
+            ]
         )
     ],
 )
