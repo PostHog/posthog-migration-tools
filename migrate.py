@@ -278,11 +278,9 @@ def elements_chain_to_elements(elements_chain: str) -> list[dict]:
             except IndexError:
                 pass
             else:
-                element["tag_name"] = tag_and_class[0]
-                if len(tag_and_class) > 1:
-                    element["attr_class"] = (
-                        tag_and_class[1] if tag_and_class[1] else None
-                    )
+                element["tag_name"] = tag_and_class.pop(0)
+                if len(tag_and_class) > 0:
+                    element["attr_class"] = tag_and_class
 
         for key, value in attributes.items():
             match key:

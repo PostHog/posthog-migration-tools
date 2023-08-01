@@ -461,7 +461,7 @@ async def setup_clickhouse_schema(client: ChClient):
                 {
                     "tag_name": "strong",
                     "attributes": {"attr__class": "pricingpage"},
-                    "attr_class": "pricingpage",
+                    "attr_class": ["pricingpage"],
                     "nth_child": 1,
                     "nth_of_type": 1,
                     "text": "A question?",
@@ -490,12 +490,41 @@ async def setup_clickhouse_schema(client: ChClient):
                     'tag_name': 'div'
                 },
                 {
-                    'attr_class': 'dark',
+                    'attr_class': ['dark'],
                     'attributes': {'attr__class': 'dark'},
                     'nth_child': 2,
                     'nth_of_type': 1,
                     'tag_name': 'body'
                 }
+            ]
+        ), (
+            'button.LemonButton.LemonButton--has-icon.LemonButton--has-side-icon.LemonButton--secondary.LemonButton'
+            '--small.LemonButton--status-stealth:attr__aria-disabled="false"attr__aria-haspopup="true"attr__class='
+            '"LemonButton LemonButton--secondary LemonButton--status-stealth LemonButton--small LemonButton--has-icon '
+            'LemonButton--has-side-icon"attr__data-attr="date-filter"attr__id="daterange_selector"attr__type="button'
+            '"attr_id="daterange_selector"nth-child="2"nth-of-type="1"text="Last 7 days"',
+            [
+                {
+                    'attr_class': ['LemonButton',
+                                   'LemonButton--has-icon',
+                                   'LemonButton--has-side-icon',
+                                   'LemonButton--secondary',
+                                   'LemonButton--small',
+                                   'LemonButton--status-stealth'],
+                    'attr_id': 'daterange_selector',
+                    'attributes': {'attr__aria-disabled': 'false',
+                                   'attr__aria-haspopup': 'true',
+                                   'attr__class': 'LemonButton LemonButton--secondary LemonButton--status-stealth '
+                                                  'LemonButton--small LemonButton--has-icon '
+                                                  'LemonButton--has-side-icon',
+                                   'attr__data-attr': 'date-filter',
+                                   'attr__id': 'daterange_selector',
+                                   'attr__type': 'button'},
+                    'nth_child': 2,
+                    'nth_of_type': 1,
+                    'tag_name': 'button',
+                    'text': 'Last 7 days'
+                },
             ]
         )
     ],
