@@ -24,7 +24,7 @@ import json
 import logging
 import re
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, List, Optional, Tuple
 from uuid import UUID
 
@@ -160,15 +160,16 @@ async def get_clickhouse_client(url: str, user: str, password: str, database: st
         await client.close()
 
 
-def get_posthog_client(url: str, api_token: str) -> Posthog:
+def get_posthog_client(url: str, api_token: str, debug: bool) -> Posthog:
     """
     Get a PostHog client. This client is used to send events to PostHog Cloud.
 
     :param url: The url of the PostHog instance to connect to.
     :param api_token: The API token to use to connect to PostHog.
+    :param debug: Whether to log payloads to stdout
     :return: A PostHog client.
     """
-    return Posthog(api_key=api_token, host=url)
+    return Posthog(api_key=api_token, host=url, debug=debug)
 
 
 def get_start_date(start_date: Optional[str]) -> datetime:
@@ -518,7 +519,7 @@ async def migrate_events(
                 posthog_client.capture(
                     distinct_id=record["distinct_id"],
                     event=record["event"],
-                    timestamp=datetime.fromtimestamp(record["timestamp"]),
+                    timestamp=datetime.fromtimestamp(record["timestamp"], tz=timezone.utc),
                     properties=properties,
                 )
 
@@ -574,7 +575,7 @@ async def main(sys_args: Optional[List[str]] = None) -> Tuple[Optional[str], int
         database=args.clickhouse_database,
     ) as clickhouse_client:
         posthog_client = get_posthog_client(
-            url=args.posthog_url, api_token=args.posthog_api_token
+            url=args.posthog_url, api_token=args.posthog_api_token, debug=args.verbose
         )
 
         # Run the migration.
