@@ -460,11 +460,10 @@ async def setup_clickhouse_schema(client: ChClient):
             [
                 {
                     "tag_name": "strong",
-                    "attributes": {"attr__class": "pricingpage"},
-                    "attr_class": ["pricingpage"],
+                    "attr__class": "pricingpage",
                     "nth_child": 1,
                     "nth_of_type": 1,
-                    "text": "A question?",
+                    "$el_text": "A question?",
                 }
             ],
         ),
@@ -474,24 +473,21 @@ async def setup_clickhouse_schema(client: ChClient):
             """,
             [
                 {
-                    'attr_id': 'gatsby-focus-wrapper',
-                    'attributes': {'attr__id': 'gatsby-focus-wrapper',
-                                   'attr__style': 'outline:none',
-                                   'attr__tabindex': '-1'},
+                    'attr__id': 'gatsby-focus-wrapper',
+                    'attr__style': 'outline:none',
+                    'attr__tabindex': '-1',
                     'nth_child': 1,
                     'nth_of_type': 1,
                     'tag_name': 'div'
                 },
                 {
-                    'attr_id': '___gatsby',
-                    'attributes': {'attr__id': '___gatsby'},
+                    'attr__id': '___gatsby',
                     'nth_child': 3,
                     'nth_of_type': 1,
                     'tag_name': 'div'
                 },
                 {
-                    'attr_class': ['dark'],
-                    'attributes': {'attr__class': 'dark'},
+                    'attr__class': 'dark',
                     'nth_child': 2,
                     'nth_of_type': 1,
                     'tag_name': 'body'
@@ -505,25 +501,18 @@ async def setup_clickhouse_schema(client: ChClient):
             '"attr_id="daterange_selector"nth-child="2"nth-of-type="1"text="Last 7 days"',
             [
                 {
-                    'attr_class': ['LemonButton',
-                                   'LemonButton--has-icon',
+                    'attr__aria-disabled': 'false',
+                    'attr__aria-haspopup': 'true',
+                    'attr__class': 'LemonButton LemonButton--secondary LemonButton--status-stealth '
+                                   'LemonButton--small LemonButton--has-icon '
                                    'LemonButton--has-side-icon',
-                                   'LemonButton--secondary',
-                                   'LemonButton--small',
-                                   'LemonButton--status-stealth'],
-                    'attr_id': 'daterange_selector',
-                    'attributes': {'attr__aria-disabled': 'false',
-                                   'attr__aria-haspopup': 'true',
-                                   'attr__class': 'LemonButton LemonButton--secondary LemonButton--status-stealth '
-                                                  'LemonButton--small LemonButton--has-icon '
-                                                  'LemonButton--has-side-icon',
-                                   'attr__data-attr': 'date-filter',
-                                   'attr__id': 'daterange_selector',
-                                   'attr__type': 'button'},
+                    'attr__data-attr': 'date-filter',
+                    'attr__id': 'daterange_selector',
+                    'attr__type': 'button',
                     'nth_child': 2,
                     'nth_of_type': 1,
                     'tag_name': 'button',
-                    'text': 'Last 7 days'
+                    '$el_text': 'Last 7 days'
                 },
             ]
         )
