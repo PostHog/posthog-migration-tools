@@ -265,7 +265,7 @@ def elements_chain_to_elements(elements_chain: str) -> list[dict]:
         class_attributes = re.search(split_class_attributes_regex, match.group(0))
 
         attributes = {}
-        if class_attributes is not None:
+        if class_attributes is not None and class_attributes.group(3):
             try:
                 attributes = {
                     m[2]: m[3]
@@ -278,7 +278,7 @@ def elements_chain_to_elements(elements_chain: str) -> list[dict]:
 
         element = {}
 
-        if class_attributes is not None:
+        if class_attributes is not None and class_attributes.group(1):
             try:
                 tag_and_class = class_attributes.group(1).split(".")
             except IndexError:

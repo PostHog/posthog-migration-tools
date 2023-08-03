@@ -466,8 +466,18 @@ async def setup_clickhouse_schema(client: ChClient):
                     "$el_text": "A question?",
                 }
             ],
-        ),
-        (
+        ), (
+            """strong.pricingpage;a:text="Link text";""",
+            [
+                {
+                    "tag_name": "strong",
+                    "attr__class": ["pricingpage"]
+                }, {
+                    "tag_name": "a",
+                    "$el_text": "Link text",
+                }
+            ],
+        ), (
             """
             div:attr__id="gatsby-focus-wrapper"attr__style="outline:none"attr__tabindex="-1"attr_id="gatsby-focus-wrapper"nth-child="1"nth-of-type="1";div:attr__id="___gatsby"attr_id="___gatsby"nth-child="3"nth-of-type="1";body.dark:attr__class="dark"nth-child="2"nth-of-type="1"
             """,
