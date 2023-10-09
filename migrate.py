@@ -22,7 +22,6 @@ import contextlib
 import dataclasses
 import json
 import logging
-import re
 import sys
 from datetime import datetime, timedelta, timezone
 from typing import Any, List, Optional, Tuple
@@ -245,69 +244,6 @@ def unmarshal_cursor(cursor: str) -> "Cursor":
     )
 
 
-def elements_chain_to_elements(elements_chain: str) -> list[dict]:
-    """
-    Parses the elements_chain string into a list of objects that will be correctly parsed
-    by ingestion. The output format is built by observing how it is read by
-    https://github.com/PostHog/posthog/blob/master/plugin-server/src/utils/db/elements-chain.ts
-    """
-    elements = []
-
-    split_chain_regex = re.compile(r'(?:[^\s;"]|"(?:\\.|[^"])*")+')
-    split_class_attributes_regex = re.compile(
-        r"(.*?)($|:([a-zA-Z\-_0-9]*=.*))", flags=re.MULTILINE
-    )
-    parse_attributes_regex = re.compile(r'((.*?)="(.*?[^\\])")')
-
-    elements_chain = elements_chain.replace("\n", "")
-
-    for match in re.finditer(split_chain_regex, elements_chain):
-        class_attributes = re.search(split_class_attributes_regex, match.group(0))
-
-        attributes = {}
-        if class_attributes is not None and class_attributes.group(3):
-            try:
-                attributes = {
-                    m[2]: m[3]
-                    for m in re.finditer(
-                        parse_attributes_regex, class_attributes.group(3)
-                    )
-                }
-            except IndexError:
-                pass
-
-        element = {}
-
-        if class_attributes is not None and class_attributes.group(1):
-            try:
-                tag_and_class = class_attributes.group(1).split(".")
-            except IndexError:
-                pass
-            else:
-                element["tag_name"] = tag_and_class.pop(0)
-                if len(tag_and_class) > 0:
-                    element["attr__class"] = tag_and_class
-
-        for key, value in attributes.items():
-            match key:
-                case "href":
-                    element["attr__href"] = value
-                case "nth-child":
-                    element["nth_child"] = int(value)
-                case "nth-of-type":
-                    element["nth_of_type"] = int(value)
-                case "text":
-                    element["$el_text"] = value
-                case "attr_id":
-                    element["attr__id"] = value
-                case k:
-                    element[k] = value
-
-        elements.append(element)
-
-    return elements
-
-
 async def migrate_events(
     clickhouse_client: ChClient,
     posthog_client: Posthog,
@@ -503,7 +439,7 @@ async def migrate_events(
                 record["event"] == "$autocapture"
                 and record.get("elements_chain", None) is not None
             ):
-                properties["$elements"] = elements_chain_to_elements(record["elements_chain"])
+                properties["$elements_chain"] = record["elements_chain"]
 
             # Send the event to PostHog Cloud.
             if not dry_run:
