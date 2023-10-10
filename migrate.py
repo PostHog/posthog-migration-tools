@@ -144,7 +144,8 @@ async def get_clickhouse_client(url: str, user: str, password: str, database: st
         # Without this I was getting the error: "ServerDisconnectedError" when
         # running without `--dry-run`. With `--dry-run` it worked fine, I'm not
         # sure why.
-        force_close=True
+        force_close=True,
+        ssl=False,
     )
     async with aiohttp.ClientSession(connector=connector) as session:
         client = ChClient(
