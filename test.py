@@ -187,7 +187,7 @@ async def test_can_migrate_events_to_posthog():
                     # These are a little annoying but not the end of the world, I'll
                     # add something to the readme about it.
                     "$lib": "posthog-python",
-                    "$lib_version": "3.0.1",
+                    "$lib_version": "3.1.0",
                     "$geoip_disable": True,  # This makes sense, it shouldn't do geoip again
                 },
                 "context": {},  # I don't know what this one is but it seems to get added
@@ -339,7 +339,7 @@ async def test_can_migrate_events_to_posthog():
                         # These are a little annoying but not the end of the world, I'll
                         # add something to the readme about it.
                         "$lib": "posthog-python",
-                        "$lib_version": "3.0.1",
+                        "$lib_version": "3.1.0",
                         "$geoip_disable": True,  # This makes sense, it shouldn't do geoip again
                     },
                     "context": {},  # I don't know what this one is but it seems to get added
@@ -404,7 +404,7 @@ async def test_can_migrate_events_to_posthog():
                         # These are a little annoying but not the end of the world, I'll
                         # add something to the readme about it.
                         "$lib": "posthog-python",
-                        "$lib_version": "3.0.1",
+                        "$lib_version": "3.1.0",
                         "$geoip_disable": True,  # This makes sense, it shouldn't do geoip again
                     },
                     "context": {},  # I don't know what this one is but it seems to get added
