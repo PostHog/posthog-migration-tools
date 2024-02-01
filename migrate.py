@@ -399,7 +399,23 @@ async def migrate_events(
             SELECT
                 count(*)
 
-            FROM ({results_range_query})
+            FROM events
+
+            -- Filter by team ID and date range. We use timestamp to filter by, as
+            -- this is part of the sort key or at least toDate(timestamp) is it
+            -- should be reasonably efficient.
+            WHERE
+                team_id = {team_id}
+                AND timestamp >= toDateTime64({int(start_date.timestamp())}, 6)
+                AND timestamp < toDateTime64({int(end_date.timestamp())}, 6)
+
+                -- Use >= timestamp to ensure we don't miss any events.
+                -- Use the (mostly probably) unique uuid property to ensure that we
+                -- don't duplicate events.
+                AND (timestamp, uuid) > (
+                    toDateTime64({(int(cursor.timestamp) if cursor else 0)}, 6),
+                    toUUID('{str(cursor.uuid) if cursor else '00000000-0000-0000-0000-000000000000'}')
+                )
         """
 
         # Query the number of events to migrate.
