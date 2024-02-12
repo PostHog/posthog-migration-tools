@@ -30,7 +30,7 @@ async def test_can_migrate_events_to_posthog():
             VALUES
             """,
             (
-                "00000000-0000-0000-0000-000000000000",
+                "00000000-0000-0000-0000-000000000001",
                 "test",
                 json.dumps(
                     properties1 := {
@@ -50,7 +50,6 @@ async def test_can_migrate_events_to_posthog():
                         "$screen_height": 900,
                         "$screen_width": 1440,
                         "$user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) PostHog/1.24.0 Chrome/90.0.4430.93 Electron/12.0.7 Safari/537.36",
-                        "distinct_id": "00000000-0000-0000-0000-000000000000",
                         "elements": [
                             {
                                 "attr__class": "ant-btn",
@@ -61,7 +60,6 @@ async def test_can_migrate_events_to_posthog():
                                 "text": "Sign up",
                             }
                         ],
-                        "event": "$pageview",
                         "properties": {
                             "$current_url": "http://localhost:8000/",
                             "$initial_referrer": "http://localhost:8000/",
@@ -69,20 +67,19 @@ async def test_can_migrate_events_to_posthog():
                             "$referrer": "http://localhost:8000/",
                             "$referring_domain": "localhost",
                         },
-                        "timestamp": "2021-05-05T16:00:00.000000Z",
                         "type": "$autocapture",
                     }
                 ),
                 datetime.datetime(2021, 5, 5, 16, 0, 0),
                 team_id,
-                "00000000-0000-0000-0000-000000000000",
+                "distinct_id_1",
                 datetime.datetime(2021, 5, 5, 16, 0, 0),
                 """strong.pricingpage:attr__class="pricingpage"nth-child="1"nth-of-type="1"text="A question?";""",
                 datetime.datetime(2021, 5, 5, 16, 0, 0),
                 0,
             ),
             (
-                "00000000-0000-0000-0000-000000000001",
+                "00000000-0000-0000-0000-000000000002",
                 "test",
                 json.dumps(
                     properties2 := {
@@ -102,7 +99,6 @@ async def test_can_migrate_events_to_posthog():
                         "$screen_height": 900,
                         "$screen_width": 1440,
                         "$user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) PostHog/1.24.0 Chrome/90.0.4430.93 Electron/12.0.7 Safari/537.36",
-                        "distinct_id": "00000000-0000-0000-0000-000000000000",
                         "elements": [
                             {
                                 "attr__class": "ant-btn",
@@ -113,7 +109,6 @@ async def test_can_migrate_events_to_posthog():
                                 "text": "Sign up",
                             }
                         ],
-                        "event": "$pageview",
                         "properties": {
                             "$current_url": "http://localhost:8000/",
                             "$initial_referrer": "http://localhost:8000/",
@@ -121,16 +116,15 @@ async def test_can_migrate_events_to_posthog():
                             "$referrer": "http://localhost:8000/",
                             "$referring_domain": "localhost",
                         },
-                        "timestamp": "2021-05-05T16:00:00.000000Z",
                         "type": "$autocapture",
                     }
                 ),
-                datetime.datetime(2021, 5, 5, 16, 2, 0),
+                datetime.datetime(2021, 7, 7, 16, 0, 0),
                 team_id,
-                "00000000-0000-0000-0000-000000000000",
-                datetime.datetime(2021, 5, 5, 16, 2, 0),
+                "distinct_id_2",
+                datetime.datetime(2021, 7, 7, 16, 0, 0),
                 """strong.pricingpage:attr__class="pricingpage"nth-child="1"nth-of-type="1"text="A question?";""",
-                datetime.datetime(2021, 5, 5, 16, 2, 0),
+                datetime.datetime(2021, 7, 7, 16, 0, 0),
                 1,
             ),
         )
@@ -163,7 +157,7 @@ async def test_can_migrate_events_to_posthog():
                     "--start-date",
                     "2021-05-04",
                     "--end-date",
-                    "2021-05-06",
+                    "2021-08-08",
                     "--verbose",
                 ]
             )
@@ -180,7 +174,7 @@ async def test_can_migrate_events_to_posthog():
 
             # Check we include the right events
             assert body_json["batch"][0] == {
-                "distinct_id": "00000000-0000-0000-0000-000000000000",
+                "distinct_id": "distinct_id_1",
                 "event": "test",
                 "properties": {
                     **properties1,
@@ -192,6 +186,7 @@ async def test_can_migrate_events_to_posthog():
                 },
                 "context": {},  # I don't know what this one is but it seems to get added
                 "timestamp": "2021-05-05T16:00:00+00:00",
+                "uuid": "00000000-0000-0000-0000-000000000001",
             }
 
         # Check we don't include events before the start date
@@ -314,7 +309,7 @@ async def test_can_migrate_events_to_posthog():
                     "--start-date",
                     "2021-05-05T16:00:00",
                     "--end-date",
-                    "2021-05-05T16:01:00",  # Before the second event
+                    "2021-06-06T16:00:00",  # Before the second event
                     "--verbose",
                 ]
             )
@@ -332,7 +327,7 @@ async def test_can_migrate_events_to_posthog():
             # Check we include the first event only
             assert body_json["batch"] == [
                 {
-                    "distinct_id": "00000000-0000-0000-0000-000000000000",
+                    "distinct_id": "distinct_id_1",
                     "event": "test",
                     "properties": {
                         **properties1,
@@ -344,6 +339,7 @@ async def test_can_migrate_events_to_posthog():
                     },
                     "context": {},  # I don't know what this one is but it seems to get added
                     "timestamp": "2021-05-05T16:00:00+00:00",
+                    "uuid": "00000000-0000-0000-0000-000000000001",
                 }
             ]
 
@@ -377,9 +373,9 @@ async def test_can_migrate_events_to_posthog():
                     "--cursor",
                     cursor,
                     "--start-date",
-                    "2021-05-05T16:00:00",
+                    "2021-04-04T16:00:00",
                     "--end-date",
-                    "2021-05-05T16:03:00",
+                    "2021-08-08T16:00:00",
                     "--verbose",
                 ]
             )
@@ -397,7 +393,7 @@ async def test_can_migrate_events_to_posthog():
             # Check we include the second event only
             assert body_json["batch"] == [
                 {
-                    "distinct_id": "00000000-0000-0000-0000-000000000000",
+                    "distinct_id": "distinct_id_2",
                     "event": "test",
                     "properties": {
                         **properties2,
@@ -408,7 +404,8 @@ async def test_can_migrate_events_to_posthog():
                         "$geoip_disable": True,  # This makes sense, it shouldn't do geoip again
                     },
                     "context": {},  # I don't know what this one is but it seems to get added
-                    "timestamp": "2021-05-05T16:02:00+00:00",
+                    "timestamp": "2021-07-07T16:00:00+00:00",
+                    "uuid": "00000000-0000-0000-0000-000000000002",
                 }
             ]
 
