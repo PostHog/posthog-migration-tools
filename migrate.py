@@ -465,6 +465,7 @@ async def migrate_events(
                     event=record["event"],
                     timestamp=datetime.fromtimestamp(record["timestamp"], tz=timezone.utc),
                     properties=properties,
+                    uuid=record["uuid"],
                 )
 
             cursor = Cursor(timestamp=record["timestamp"], uuid=record["uuid"])
