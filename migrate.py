@@ -452,6 +452,7 @@ async def migrate_events(
             # Parse the event properties.
             properties = json.loads(record["properties"])
 
+            properties["$geoip_disable"] = True
             if (
                 record["event"] == "$autocapture"
                 and record.get("elements_chain", None) is not None
@@ -463,7 +464,9 @@ async def migrate_events(
                 posthog_client.capture(
                     distinct_id=record["distinct_id"],
                     event=record["event"],
-                    timestamp=datetime.fromtimestamp(record["timestamp"], tz=timezone.utc),
+                    timestamp=datetime.fromtimestamp(
+                        record["timestamp"], tz=timezone.utc
+                    ),
                     properties=properties,
                     uuid=record["uuid"],
                 )
