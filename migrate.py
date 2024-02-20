@@ -169,7 +169,7 @@ def get_posthog_client(url: str, api_token: str, debug: bool) -> Posthog:
     :param debug: Whether to log payloads to stdout
     :return: A PostHog client.
     """
-    return Posthog(api_key=api_token, host=url, debug=debug)
+    return Posthog(api_key=api_token, host=url, debug=debug, historical_migration=True)
 
 
 def get_start_date(start_date: Optional[str]) -> datetime:
