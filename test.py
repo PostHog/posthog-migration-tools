@@ -173,21 +173,24 @@ async def test_can_migrate_events_to_posthog():
             assert body_json["api_key"] == "test"
 
             # Check we include the right events
-            assert body_json["batch"][0] == {
-                "distinct_id": "distinct_id_1",
-                "event": "test",
-                "properties": {
-                    **properties1,
-                    # These are a little annoying but not the end of the world, I'll
-                    # add something to the readme about it.
-                    "$lib": "posthog-python",
-                    "$lib_version": "3.1.0",
-                    "$geoip_disable": True,  # This makes sense, it shouldn't do geoip again
-                },
-                "context": {},  # I don't know what this one is but it seems to get added
-                "timestamp": "2021-05-05T16:00:00+00:00",
-                "uuid": "00000000-0000-0000-0000-000000000001",
-            }
+            assert (
+                body_json["batch"][0]
+                == {
+                    "distinct_id": "distinct_id_1",
+                    "event": "test",
+                    "properties": {
+                        **properties1,
+                        # These are a little annoying but not the end of the world, I'll
+                        # add something to the readme about it.
+                        "$lib": "posthog-python",
+                        "$lib_version": "3.4.2",
+                        "$geoip_disable": True,  # This makes sense, it shouldn't do geoip again
+                    },
+                    "context": {},  # I don't know what this one is but it seems to get added
+                    "timestamp": "2021-05-05T16:00:00+00:00",
+                    "uuid": "00000000-0000-0000-0000-000000000001",
+                }
+            )
 
         # Check we don't include events before the start date
         with responses.RequestsMock() as rsps:
@@ -325,23 +328,26 @@ async def test_can_migrate_events_to_posthog():
             assert body_json["api_key"] == "test"
 
             # Check we include the first event only
-            assert body_json["batch"] == [
-                {
-                    "distinct_id": "distinct_id_1",
-                    "event": "test",
-                    "properties": {
-                        **properties1,
-                        # These are a little annoying but not the end of the world, I'll
-                        # add something to the readme about it.
-                        "$lib": "posthog-python",
-                        "$lib_version": "3.1.0",
-                        "$geoip_disable": True,  # This makes sense, it shouldn't do geoip again
-                    },
-                    "context": {},  # I don't know what this one is but it seems to get added
-                    "timestamp": "2021-05-05T16:00:00+00:00",
-                    "uuid": "00000000-0000-0000-0000-000000000001",
-                }
-            ]
+            assert (
+                body_json["batch"]
+                == [
+                    {
+                        "distinct_id": "distinct_id_1",
+                        "event": "test",
+                        "properties": {
+                            **properties1,
+                            # These are a little annoying but not the end of the world, I'll
+                            # add something to the readme about it.
+                            "$lib": "posthog-python",
+                            "$lib_version": "3.4.2",
+                            "$geoip_disable": True,  # This makes sense, it shouldn't do geoip again
+                        },
+                        "context": {},  # I don't know what this one is but it seems to get added
+                        "timestamp": "2021-05-05T16:00:00+00:00",
+                        "uuid": "00000000-0000-0000-0000-000000000001",
+                    }
+                ]
+            )
 
         assert cursor
 
@@ -391,23 +397,26 @@ async def test_can_migrate_events_to_posthog():
             assert body_json["api_key"] == "test"
 
             # Check we include the second event only
-            assert body_json["batch"] == [
-                {
-                    "distinct_id": "distinct_id_2",
-                    "event": "test",
-                    "properties": {
-                        **properties2,
-                        # These are a little annoying but not the end of the world, I'll
-                        # add something to the readme about it.
-                        "$lib": "posthog-python",
-                        "$lib_version": "3.1.0",
-                        "$geoip_disable": True,  # This makes sense, it shouldn't do geoip again
-                    },
-                    "context": {},  # I don't know what this one is but it seems to get added
-                    "timestamp": "2021-07-07T16:00:00+00:00",
-                    "uuid": "00000000-0000-0000-0000-000000000002",
-                }
-            ]
+            assert (
+                body_json["batch"]
+                == [
+                    {
+                        "distinct_id": "distinct_id_2",
+                        "event": "test",
+                        "properties": {
+                            **properties2,
+                            # These are a little annoying but not the end of the world, I'll
+                            # add something to the readme about it.
+                            "$lib": "posthog-python",
+                            "$lib_version": "3.4.2",
+                            "$geoip_disable": True,  # This makes sense, it shouldn't do geoip again
+                        },
+                        "context": {},  # I don't know what this one is but it seems to get added
+                        "timestamp": "2021-07-07T16:00:00+00:00",
+                        "uuid": "00000000-0000-0000-0000-000000000002",
+                    }
+                ]
+            )
 
 
 async def setup_clickhouse_schema(client: ChClient):
