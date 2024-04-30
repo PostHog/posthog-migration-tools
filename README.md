@@ -3,7 +3,7 @@
 ## TL;DR
 
 We provide a bulk export functionality to allow users to migrate from
-self-hosted to Cloud deployments using e.g. the Replicator App. This can be
+self-hosted to Cloud deployments. This can be
 slow and unreliable.
 
 Git clone this repo and run something like:
